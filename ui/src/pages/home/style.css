@@ -1,0 +1,27 @@
+
+/* 
+https://www.fontget.com/font/muthiara/
+https://www.fontget.com/font/starfish/
+https://www.fontget.com/font/sweet-pea/
+https://www.fontget.com/font/wonderblend-font-family/
+ */
+
+@font-face {
+  font-family: muthiara;
+  src: url(../../fonts/muthiara.otf);
+}
+
+@font-face {
+  font-family: starfish;
+  src: url(../../fonts/starfish.ttf);
+}
+
+/* Monoton|Bungee+Shade|Righteous */
+#tagline {
+    font-family:  'Poiret One';
+    font-size: 3em;
+    text-align: center;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    font-weight: bold;
+}
