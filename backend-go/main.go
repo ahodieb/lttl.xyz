@@ -42,7 +42,7 @@ type Config struct {
 func config() Config {
 	environment := os.Getenv("ENVIRONMENT")
 	if environment == "APP_ENGINE" {
-		return Config{environment, "ui", "lttl.xyz", true}
+		return Config{environment, "ui", "lttlxyz.appspot.com", true}
 	}
 	return Config{environment, "../ui/build", "", false}
 }
