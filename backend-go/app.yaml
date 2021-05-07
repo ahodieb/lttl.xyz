@@ -1,0 +1,3 @@
+runtime: go115
+env_variables:
+    ENVIRONMENT: "APP_ENGINE"

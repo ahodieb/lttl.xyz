@@ -6,13 +6,36 @@ import (
     "net/http"
 )
 
+type HostNameResolver interface {
+    Resolve(c *gin.Context) string
+}
+
 type Api struct {
-    Store Store
+    Store            Store
+    hostnameResolver HostNameResolver
+}
+
+type fromLocation struct{}
+
+func (r *fromLocation) Resolve(c *gin.Context) string {
+    return location.Get(c).String()
+}
+
+type staticHostName struct {
+    hostname string
+}
+
+func (r *staticHostName) Resolve(c *gin.Context) string {
+    return r.hostname
 }
 
 func NewApiWithInMemoryStore() Api {
     store := NewInMemory()
-    return Api{&store}
+    return Api{&store, &fromLocation{}}
+}
+
+func (a *Api) WithStaticHostName(hostname string) Api {
+    return Api{a.Store, &staticHostName{hostname}}
 }
 
 func (a *Api) Get(c *gin.Context) {
@@ -34,7 +57,7 @@ func (a *Api) Shorten(c *gin.Context) {
 
     c.BindJSON(&req)
 
-    hostname := location.Get(c).String()
+    hostname := a.hostnameResolver.Resolve(c)
     shortUrl, err := a.Store.Put(ShortUrl{Target: req.Url, Alias: req.Alias}.WithHostname(hostname))
 
     if err != nil {

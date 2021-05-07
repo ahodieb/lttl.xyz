@@ -1,31 +1,60 @@
 package main
 
 import (
-    "github.com/gin-contrib/cors"
-    "github.com/gin-contrib/gzip"
-    "github.com/gin-contrib/location"
-    "github.com/gin-contrib/static"
-    "github.com/gin-gonic/gin"
+	"os"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/gzip"
+	"github.com/gin-contrib/location"
+	"github.com/gin-contrib/static"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-    r := gin.Default()
-    r.Use(gzip.Gzip(gzip.DefaultCompression))
-    r.Use(cors.Default())
-    r.Use(location.Default())
+	config := config()
+	r := gin.Default()
+	if config.ReleaseMode {
+		gin.SetMode("release")
+	}
+	r.Use(gzip.Gzip(gzip.DefaultCompression))
+	r.Use(cors.Default())
+	r.Use(location.Default())
+	r.Use(static.Serve("/", static.LocalFile(config.StaticAssets, false)))
+	handlers := HandlersFromConfig(config)
+	r.GET("/:alias", handlers.Redirect)
+	api := r.Group("api/urls/")
+	{
+		api.GET("/:alias", handlers.Get)
+		api.POST("/", handlers.Shorten)
+		api.GET("/", handlers.List)
 
-    r.Use(static.Serve("/", static.LocalFile("../ui/build", false)))
+	}
+	r.Run()
+}
 
-    handlers := NewApiWithInMemoryStore()
+type Config struct {
+	Environment  string
+	StaticAssets string
+	HostName     string
+	ReleaseMode  bool
+}
 
-    r.GET("/:alias", handlers.Redirect)
-    api := r.Group("api/urls/")
-    {
-        api.GET("/:alias", handlers.Get)
-        api.POST("/", handlers.Shorten)
-        api.GET("/", handlers.List)
+func config() Config {
+	environment := os.Getenv("ENVIRONMENT")
+	if environment == "APP_ENGINE" {
+		return Config{environment, "ui", "lttl.xyz", true}
+	}
+	return Config{environment, "../ui/build", "", false}
+}
 
-    }
+func (c *Config) hasHostName() bool {
+	return c.HostName != ""
+}
 
-    r.Run()
+func HandlersFromConfig(c Config) Api {
+	handlers := NewApiWithInMemoryStore()
+	if c.hasHostName() {
+		handlers = handlers.WithStaticHostName(c.HostName)
+	}
+	return handlers
 }
