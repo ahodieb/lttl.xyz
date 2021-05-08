@@ -15,16 +15,18 @@ const DisplayShortUrl: FunctionComponent<DisplayShortUrlProps> = ({ shortUrl, on
                 <input className="input is-medium" type="text" readOnly value={url} />
             </div>
             <div className="control">
-                <button className="button is-medium is-primary" onClick={() => navigator.clipboard.writeText(url)} >
+                <button className="button is-medium is-themed" onClick={() => navigator.clipboard.writeText(url)} >
                     <span className="icon">
-                        <i className="fas fa-copy"></i>
+                        <svg className="svg-icon">
+                            <use xlinkHref="#icon-copy "></use>
+                        </svg>
                     </span>
                 </button>
             </div>
         </div>
 
         <div className="control">
-            <button className="button is-fullwidth is-primary is-medium" onClick={onClick}>Shorten another url</button>
+            <button className="button is-fullwidth is-themed is-medium" onClick={onClick}>Shorten another url</button>
         </div>
     </div>)
 }

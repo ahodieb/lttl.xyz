@@ -5,7 +5,11 @@ import { ShortUrl } from '../../models';
 import DisplayShortUrl from './display-short-url';
 import SubmitUrlForm from './submit-url-form';
 
-const UrlForm: FunctionComponent = () => {
+interface UrlFormProps {
+    onError: (message: string) => void;
+}
+
+const UrlForm: FunctionComponent<UrlFormProps> = ({ onError }) => {
     const [shortUrl, setShortUrl] = useState<ShortUrl | undefined>(undefined);
     const clear = () => { setShortUrl(undefined) }
 
@@ -13,7 +17,7 @@ const UrlForm: FunctionComponent = () => {
         return <DisplayShortUrl shortUrl={shortUrl} onClick={clear} />
     }
 
-    return <SubmitUrlForm callback={setShortUrl} />
+    return <SubmitUrlForm callback={setShortUrl} onError={onError} />
 }
 
 export default UrlForm;

@@ -4,9 +4,10 @@ import { ShortUrl } from '../../models';
 
 interface Props {
     callback: (url: ShortUrl) => void;
+    onError: (message: string) => void;
 }
 
-const SubmitUrlForm: FunctionComponent<Props> = ({ callback }) => {
+const SubmitUrlForm: FunctionComponent<Props> = ({ callback, onError }) => {
     const [url, setUrl] = useState<string>("");
     const [alias, setAlias] = useState<string>("");
 
@@ -21,10 +22,18 @@ const SubmitUrlForm: FunctionComponent<Props> = ({ callback }) => {
     const onSubmit = async () => {
         if (!url || url.trim().length <= 0) { return; }
 
-        const shortUrl = await api.shortenUrl(url.trim(), alias);
-        callback(shortUrl);
-        setUrl("");
-        setAlias("");
+        try {
+            const shortUrl = await api.shortenUrl(url.trim(), alias);
+            setUrl("");
+            setAlias("");
+            callback(shortUrl);
+        } catch (e) {
+            if (e.response && e.response.data.error) {
+                onError(e.response.data.error);
+            } else {
+                onError("Something went wrong!");
+            }
+        }
     }
 
     return (
@@ -38,14 +47,14 @@ const SubmitUrlForm: FunctionComponent<Props> = ({ callback }) => {
             <label className="label is-medium">Customize</label>
             <div className="field has-addons">
                 <p className="control ">
-                    <a className="button is-static is-medium">lttl.xyz/</a>
+                    <a className="button is-static is-medium is-themed">lttl.xyz/</a>
                 </p>
                 <p className="control is-expanded">
                     <input className="input is-medium" value={alias} type="text" placeholder="alias" onChange={onAliasChange} />
                 </p>
             </div>
             <div className="control">
-                <button className="button is-fullwidth is-primary is-large" onClick={onSubmit}>Shorten</button>
+                <button className="button is-fullwidth is-large is-themed" onClick={onSubmit}>Shorten</button>
             </div>
         </div>
     );
