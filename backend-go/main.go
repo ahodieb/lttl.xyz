@@ -20,6 +20,7 @@ func main() {
 	r.Use(cors.Default())
 	r.Use(location.Default())
 	r.Use(static.Serve("/", static.LocalFile(config.StaticAssets, false)))
+
 	handlers := HandlersFromConfig(config)
 	r.GET("/:alias", handlers.Redirect)
 	api := r.Group("api/urls/")
@@ -27,7 +28,6 @@ func main() {
 		api.GET("/:alias", handlers.Get)
 		api.POST("/", handlers.Shorten)
 		api.GET("/", handlers.List)
-
 	}
 	r.Run()
 }
@@ -42,7 +42,7 @@ type Config struct {
 func config() Config {
 	environment := os.Getenv("ENVIRONMENT")
 	if environment == "APP_ENGINE" {
-		return Config{environment, "ui", "lttlxyz.appspot.com", true}
+		return Config{environment, "ui", "lttl.xyz", true}
 	}
 	return Config{environment, "../ui/build", "", false}
 }
