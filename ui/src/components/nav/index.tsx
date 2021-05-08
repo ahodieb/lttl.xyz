@@ -1,6 +1,5 @@
 import React from 'react';
 
-import './style.css';
 
 const Nav: React.FunctionComponent = () => {
     return (<nav id="nav" className="navbar is-fixed-top">

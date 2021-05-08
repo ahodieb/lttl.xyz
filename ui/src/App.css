@@ -1,6 +1,61 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css";
-@import url('https://fonts.googleapis.com/css?family=Monoton|Bungee+Shade|Righteous|Poiret+One|Concert+One|Patua+One|Chivo');
-
-html, body, #root {
+@import url('https://fonts.googleapis.com/css?family=Patua+One|Chivo');
+html,
+body,
+#root {
     height: 100%;
+}
+
+#nav {
+    background-color: #2e7bca;
+}
+
+#logo {
+    font-family: 'Patua One';
+    vertical-align: text-bottom;
+    display: inline-block;
+    color: white;
+}
+
+.logo-prefix {
+    font-size: 2em;
+}
+
+.logo-suffix {
+    font-size: 1em;
+}
+
+footer {
+    font-family: 'Chivo';
+}
+
+label,
+input {
+    font-family: 'Patua One';
+}
+
+.is-themed {
+    font-family: 'Patua One';
+}
+
+button.is-themed,
+button.is-themed:hover,
+button.is-themed:focus {
+    background-color: #58c3ff;
+    color: white;
+}
+
+
+/* https: //www.wouterbulten.nl/blog/tech/blog-optimization-replacing-font-awesome-with-svg/ */
+
+.svg-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    fill: currentColor
+}
+
+.svg-icon.is-medium-icon {
+    width: 1.75em;
+    height: 1.75em;
 }
