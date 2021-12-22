@@ -1,0 +1,15 @@
+# Illustrations: 
+
+* https://www.getillustrations.com/single-illustration/Explore-Travel-Web-Online-Space-Cat
+* https://freeillustrations.xyz/
+* https://icons8.com/illustrations/working
+
+
+
+## Url shorteners
+https://buffer.com/library/url-shorteners/
+https://zapier.com/blog/best-url-shorteners/
+
+
+https://blog.logrocket.com/react-hooks-cheat-sheet-unlock-solutions-to-common-problems-af4caf699e70/
+https://github.com/typescript-cheatsheets/react
